@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Nuevo pedido</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Nuevo pedido</h1>
+      <div class="actions">
+        <a class="btn secondary" href="/admin/pedidos">← Volver</a>
+      </div>
+    </header>
+
+    <section class="card" style="margin-bottom:16px;">
+      <form method="post" action="/admin/pedidos/nuevo">
+        <!-- Cliente + Observaciones -->
+        <div class="form-row">
+          <div>
+            <label for="cliente_id">Cliente</label>
+            <select id="cliente_id" name="cliente_id" required>
+              <% clientes.forEach(c => { %>
+                <option value="<%= c.id %>">
+                  <%= c.empresa || ((c.nombre||'') + ' ' + (c.apellidos||'')) %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div>
+            <label for="obs">Observaciones</label>
+            <textarea id="obs" name="observaciones" rows="3" placeholder="Notas para el taller…"></textarea>
+          </div>
+        </div>
+
+        <!-- Productos -->
+        <h2 style="margin-top:8px;">Productos</h2>
+        <div class="card" style="background:#fffef0; margin-top:8px;">
+          <% if (!productos.length) { %>
+            <p style="color:var(--muted);">No hay productos activos.</p>
+          <% } else { %>
+            <ul style="list-style:none; padding:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <% productos.forEach(p => { %>
+                <li style="display:flex; gap:8px; align-items:center;">
+                  <input
+                    type="checkbox"
+                    id="prod-<%= p.id %>"
+                    name="productos"
+                    value='<%- JSON.stringify({ producto_id: p.id, cantidad: 1, precio_unitario: p.precio }) %>'>
+                  <label for="prod-<%= p.id %>" style="flex:1;">
+                    <strong><%= p.nombre %></strong> — <%= Number(p.precio).toFixed(2) %> €
+                    <span style="color:var(--muted); font-size:12px; margin-left:6px;">(x1)</span>
+                  </label>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+
+        <div class="actions" style="margin-top:12px;">
+          <button class="btn ok">Crear pedido</button>
+          <a class="btn secondary" href="/admin/pedidos">Cancelar</a>
+        </div>
+      </form>
+    </section>
+
+    <!-- (Opcional) Ayuditas -->
+    <section class="card" style="margin-bottom:16px;">
+      <h3>Consejo</h3>
+      <p>Puedes editar estado y registrar pagos desde el detalle del pedido una vez creado.</p>
+    </section>
+  </div>
+</body>
+</html>

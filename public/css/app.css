@@ -1,0 +1,121 @@
+/* ===== Reset mínimo + variables ===== */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+:root{
+  --bg: #fffef8;
+  --fg: #111;
+  --muted:#6b6b6b;
+  --primary:#111;            /* brutalista: negro protagonista */
+  --accent:#ffdd00;          /* amarillo señalización */
+  --ok:#1a8917;              /* verde */
+  --warn:#c97b00;            /* ámbar */
+  --danger:#b00020;          /* rojo */
+  --border:#111;
+  --radius: 8px;
+  --gap: 16px;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* ===== Tipografía & layout ===== */
+body{
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.4 var(--font);
+  padding: 24px;
+}
+h1,h2,h3{
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin: 0 0 12px;
+}
+h1{ font-size: 28px; }
+h2{ font-size: 22px; }
+h3{ font-size: 18px; }
+p, ul, table, form { margin: 0 0 16px; }
+a{ color: var(--primary); text-decoration: none; border-bottom: 2px solid var(--primary); }
+a:hover{ background: var(--accent); }
+
+/* Contenedor opcional (si lo usas) */
+.container{ max-width: 980px; margin: 0 auto; }
+
+/* ===== Tarjeta brutalista ===== */
+.card{
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  background: #fff;
+  box-shadow: 6px 6px 0 #000; /* sombra dura, brutalista */
+}
+
+/* ===== Mensajes flash ===== */
+.flash{ padding: 10px 12px; border: 3px solid var(--border); background: #fff; }
+.flash.error{ background: #ffecec; border-color: var(--danger); }
+.flash.success{ background: #eaffea; border-color: var(--ok); }
+
+/* ===== Tablas ===== */
+table{
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid var(--border);
+  background: #fff;
+}
+th, td{
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+th{
+  background: var(--accent);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+/* ===== Formularios ===== */
+label{ display: inline-block; margin-bottom: 6px; font-weight: 600; }
+input, select, textarea{
+  width: 100%;
+  padding: 10px 12px;
+  border: 3px solid var(--border);
+  border-radius: 0;
+  background: #fff;
+  font: 16px var(--font);
+}
+input[type="checkbox"], input[type="radio"]{ width: auto; }
+.form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+.form-row > div{ display:flex; flex-direction:column; }
+
+/* ===== Botones ===== */
+button, .btn{
+  display: inline-block;
+  padding: 10px 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  border: 3px solid var(--border);
+  background: var(--accent);
+  cursor: pointer;
+}
+button:hover, .btn:hover{ transform: translate(-2px,-2px); box-shadow: 4px 4px 0 #000; }
+.btn.secondary{ background: #fff; }
+.btn.danger{ background: #ffd1d6; border-color: var(--danger); }
+.btn.ok{ background: #d9ffd9; border-color: var(--ok); }
+
+/* ===== Badges de estado ===== */
+.badge{
+  display:inline-block; padding: 3px 8px; border:2px solid var(--border); font-family:var(--mono);
+}
+.badge.pago-total{ background:#d9ffd9; }     /* pagado */
+.badge.pago-parcial{ background:#fff5d1; }   /* parcial */
+.badge.pago-nada{ background:#ffd1d6; }      /* sin liquidar */
+.badge.estado-proceso{ background:#fff5d1; }
+.badge.estado-terminado{ background:#eaffea; }
+.badge.estado-entregado{ background:#d9ffd9; }
+
+/* ===== Helpers de layout ===== */
+.actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.spacer{ height: 16px; }
+hr{ border:0; border-top:3px solid var(--border); margin:16px 0; }

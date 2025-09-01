@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gestión de pedidos</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Bienvenida</h1>
+      <p style="color:var(--muted)">Elige tu acceso:</p>
+    </header>
+
+    <section class="card">
+      <div class="form-row">
+        <div>
+          <a class="btn" href="/cliente/login">👤 Entrar como cliente</a>
+        </div>
+        <div>
+          <a class="btn" href="/cliente/register">🆕 Registrarse como cliente</a>
+        </div>
+        <div>
+          <a class="btn secondary" href="/auth/login">🛠️ Entrar como administrador</a>
+        </div>
+        <div>
+          <a class="btn secondary" href="/auth/register">🆕 Crear cuenta de administrador</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

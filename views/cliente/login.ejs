@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Login cliente</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error)   { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Área de cliente</h1>
+      <a class="btn secondary" href="/">← Volver</a>
+    </header>
+
+    <section class="card">
+      <form method="post" action="/cliente/login" class="form-row">
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required>
+        </div>
+        <div>
+          <label>Contraseña</label>
+          <input type="password" name="password" required>
+        </div>
+        <div style="align-self:end;">
+          <button class="btn">Entrar</button>
+        </div>
+      </form>
+
+      <p style="margin-top:12px;">¿No tienes cuenta? <a href="/cliente/register">Regístrate</a></p>
+      <p>¿Eres admin? <a href="/auth/login">Entrar como admin</a></p>
+    </section>
+  </div>
+</body>
+</html>

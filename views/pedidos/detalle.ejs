@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pedido #<%= pedido.id %></title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Flash -->
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <!-- Header + datos del cliente -->
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Pedido #<%= pedido.id %></h1>
+      <p style="color:var(--muted);">
+        Cliente: <strong><%= pedido.empresa || ((pedido.nombre||'') + ' ' + (pedido.apellidos||'')) %></strong><br>
+        Email: <%= pedido.email %> — Tel: <%= pedido.telefono || '' %><br>
+        Fecha: <%= pedido.fecha.toISOString().slice(0,19).replace('T',' ') %>
+      </p>
+      <div class="actions">
+        <a class="btn secondary" href="/admin/pedidos">← Volver al listado</a>
+      </div>
+    </header>
+
+    <!-- Estado de trabajo -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Estado de trabajo</h2>
+      <div style="margin:8px 0 12px;">
+        <% if (pedido.estado_trabajo === 'en_proceso') { %>
+          <span class="badge estado-proceso">En proceso</span>
+        <% } else if (pedido.estado_trabajo === 'terminado') { %>
+          <span class="badge estado-terminado">Terminado</span>
+        <% } else if (pedido.estado_trabajo === 'entregado') { %>
+          <span class="badge estado-entregado">Entregado</span>
+        <% } else { %>
+          <span class="badge">Recibido</span>
+        <% } %>
+      </div>
+
+      <form method="post" action="/admin/pedidos/<%= pedido.id %>/estado" class="form-row">
+        <div>
+          <label for="estado_trabajo">Nuevo estado</label>
+          <select id="estado_trabajo" name="estado_trabajo">
+            <option value="recibido"   <%= pedido.estado_trabajo==='recibido'?'selected':'' %>>Recibido</option>
+            <option value="en_proceso" <%= pedido.estado_trabajo==='en_proceso'?'selected':'' %>>En proceso</option>
+            <option value="terminado"  <%= pedido.estado_trabajo==='terminado'?'selected':'' %>>Terminado</option>
+            <option value="entregado"  <%= pedido.estado_trabajo==='entregado'?'selected':'' %>>Entregado</option>
+          </select>
+        </div>
+        <div>
+          <label for="nota">Nota (opcional)</label>
+          <input id="nota" name="nota" placeholder="Ej: Urgente, retraso, etc.">
+        </div>
+        <div style="align-self:end;">
+          <button class="btn">Actualizar estado</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Resumen económico -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Resumen económico</h2>
+      <p style="margin:8px 0 12px;">
+        Total: <strong><%= Number(resumen.total).toFixed(2) %> €</strong> ·
+        Pagado: <strong><%= Number(resumen.pagado).toFixed(2) %> €</strong> ·
+        Pago:
+        <% if (resumen.estado_pago === 'Pagado') { %>
+          <span class="badge pago-total">Pagado</span>
+        <% } else if ((resumen.pagado||0) > 0) { %>
+          <span class="badge pago-parcial">Parcial</span>
+        <% } else { %>
+          <span class="badge pago-nada">Sin liquidar</span>
+        <% } %>
+      </p>
+    </section>
+
+    <!-- Productos -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Productos</h2>
+      <table>
+        <thead>
+          <tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <% items.forEach(it => { %>
+            <tr>
+              <td><%= it.producto_nombre %></td>
+              <td><%= it.cantidad %></td>
+              <td><%= Number(it.precio_unitario).toFixed(2) %> €</td>
+              <td><%= Number(it.cantidad * it.precio_unitario).toFixed(2) %> €</td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Registrar pago -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Registrar pago</h2>
+      <form method="post" action="/admin/pedidos/<%= pedido.id %>/pagos" class="form-row">
+        <div>
+          <label for="importe">Importe</label>
+          <input id="importe" type="number" name="importe" step="0.01" min="0.01" required>
+        </div>
+        <div>
+          <label for="metodo">Método</label>
+          <select id="metodo" name="metodo">
+            <option value="transferencia">Transferencia</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div>
+          <label for="notaPago">Nota</label>
+          <input id="notaPago" name="nota" placeholder="Referencia, observación…">
+        </div>
+        <div style="align-self:end;">
+          <button class="btn ok">Guardar pago</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Pagos -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Pagos</h2>
+      <table>
+        <thead><tr><th>Fecha</th><th>Importe</th><th>Método</th><th>Nota</th></tr></thead>
+        <tbody>
+          <% pagos.forEach(pg => { %>
+            <tr>
+              <td><%= pg.fecha.toISOString().slice(0,19).replace('T',' ') %></td>
+              <td><%= Number(pg.importe).toFixed(2) %> €</td>
+              <td><%= pg.metodo %></td>
+              <td><%= pg.nota || '' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Historial -->
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Historial de trabajo</h2>
+      <ul>
+        <% hist.forEach(h => { %>
+          <li>
+            <strong><%= h.estado %></strong> — <%= h.fecha.toISOString().slice(0,19).replace('T',' ') %>
+            <%= h.nota ? ' · ' + h.nota : '' %>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <div class="actions" style="margin-top:12px;">
+      <a class="btn secondary" href="/admin/pedidos">← Volver al listado</a>
+    </div>
+
+  </div>
+</body>
+</html>

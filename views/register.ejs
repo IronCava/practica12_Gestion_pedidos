@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Registro admin</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error)   { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Registro admin</h1>
+      <a class="btn secondary" href="/">← Volver</a>
+    </header>
+
+    <section class="card">
+      <form action="/auth/register" method="POST" class="form-row">
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" required>
+        </div>
+        <div>
+          <label>Contraseña</label>
+          <input type="password" name="password" required>
+        </div>
+        <div style="align-self:end;">
+          <button class="btn ok">Crear cuenta</button>
+        </div>
+      </form>
+      <p style="margin-top:12px;">¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión</a></p>
+    </section>
+  </div>
+</body>
+</html>
+

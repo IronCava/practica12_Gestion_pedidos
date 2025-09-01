@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Editar producto #<%= p.id %></title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Editar producto #<%= p.id %></h1>
+      <div class="actions">
+        <a class="btn secondary" href="/admin/productos">← Volver</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <form method="post">
+        <div class="form-row">
+          <div>
+            <label>Nombre</label>
+            <input name="nombre" value="<%= p.nombre %>" required>
+          </div>
+          <div>
+            <label>Precio</label>
+            <input type="number" step="0.01" min="0" name="precio" value="<%= p.precio %>" required>
+          </div>
+        </div>
+
+        <div>
+          <label><input type="checkbox" name="activo" <%= p.activo ? 'checked' : '' %> > Activo</label>
+        </div>
+
+        <div class="actions" style="margin-top:12px;">
+          <button class="btn ok">Actualizar</button>
+          <a class="btn secondary" href="/admin/productos">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

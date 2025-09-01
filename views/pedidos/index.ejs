@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pedidos</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Mensajes -->
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <!-- Header -->
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Pedidos</h1>
+      <div class="actions">
+        <a href="/admin/pedidos/nuevo" class="btn">+ Nuevo pedido</a>
+        <a href="/dashboard" class="btn secondary">← Volver</a>
+      </div>
+    </header>
+
+    <!-- Tabla -->
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Pagado</th>
+            <th>Pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pedidos.forEach(p => { %>
+            <tr>
+              <td><a href="/admin/pedidos/<%= p.id %>">#<%= p.id %></a></td>
+              <td><%= p.empresa || (p.nombre + ' ' + (p.apellidos||'')) %></td>
+              <td><%= p.fecha.toISOString().slice(0,19).replace('T',' ') %></td>
+
+              <!-- Estado de trabajo como badge -->
+              <td>
+                <% if (p.estado_trabajo === 'en_proceso') { %>
+                  <span class="badge estado-proceso">En proceso</span>
+                <% } else if (p.estado_trabajo === 'terminado') { %>
+                  <span class="badge estado-terminado">Terminado</span>
+                <% } else if (p.estado_trabajo === 'entregado') { %>
+                  <span class="badge estado-entregado">Entregado</span>
+                <% } else { %>
+                  <span class="badge">Recibido</span>
+                <% } %>
+              </td>
+
+              <td><%= Number(p.total || 0).toFixed(2) %> €</td>
+              <td><%= Number(p.pagado || 0).toFixed(2) %> €</td>
+
+              <!-- Estado de pago como badge -->
+              <td>
+                <% if (p.estado_pago === 'Pagado') { %>
+                  <span class="badge pago-total">Pagado</span>
+                <% } else if ((p.pagado||0) > 0) { %>
+                  <span class="badge pago-parcial">Parcial</span>
+                <% } else { %>
+                  <span class="badge pago-nada">Sin liquidar</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

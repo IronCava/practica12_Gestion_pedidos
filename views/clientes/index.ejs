@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Clientes</h1>
+      <div class="actions">
+        <a class="btn" href="/admin/clientes/nuevo">+ Nuevo cliente</a>
+        <a class="btn secondary" href="/dashboard">← Volver</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Tipo</th><th>Empresa</th><th>Nombre</th>
+            <th>Email</th><th>Teléfono</th><th>Dirección</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clientes.forEach(c => { %>
+            <tr>
+              <td><%= c.id %></td>
+              <td><%= c.tipo_cliente %></td>
+              <td><%= c.empresa || '' %></td>
+              <td><%= (c.nombre || '') + ' ' + (c.apellidos || '') %></td>
+              <td><%= c.email %></td>
+              <td><%= c.telefono || '' %></td>
+              <td><%= c.direccion_entrega || '' %></td>
+              <td>
+                <div class="actions">
+                  <a class="btn secondary" href="/admin/clientes/<%= c.id %>/editar">Editar</a>
+                  <form action="/admin/clientes/<%= c.id %>/eliminar" method="post" onsubmit="return confirm('¿Eliminar?')">
+                    <button class="btn danger">Eliminar</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

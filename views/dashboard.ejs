@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Cabecera -->
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Dashboard</h1>
+      <p style="color:var(--muted);">Usuario ID: <strong><%= userId %></strong></p>
+      <div class="actions">
+        <a href="/" class="btn secondary">Inicio</a>
+        <a href="/auth/logout" class="btn danger">Cerrar sesión</a>
+      </div>
+    </header>
+
+    <!-- Acciones principales -->
+    <section class="card">
+      <h2>Gestión</h2>
+      <div class="form-row" style="margin-top:12px;">
+        <div>
+          <a class="btn" href="/admin/productos">📦 Gestionar productos</a>
+        </div>
+        <div>
+          <a class="btn" href="/admin/clientes">👥 Gestionar clientes</a>
+        </div>
+        <div>
+          <a class="btn" href="/admin/pedidos">🧾 Gestionar pedidos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- (Opcional) Tip rápido -->
+    <section class="card" style="margin-top:16px;">
+      <h3>Consejo</h3>
+      <p>Puedes cambiar el estado de un pedido desde su detalle y el cliente lo verá al instante (Socket.IO activo).</p>
+    </section>
+  </div>
+</body>
+</html>

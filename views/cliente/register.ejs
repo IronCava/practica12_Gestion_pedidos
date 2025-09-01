@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Registro cliente</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error)   { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Registro de cliente</h1>
+      <a class="btn secondary" href="/">← Volver</a>
+    </header>
+
+    <section class="card">
+      <form method="post" action="/cliente/register">
+
+        <!-- Tipo y empresa -->
+        <div class="form-row">
+          <div>
+            <label>Tipo</label>
+            <select name="tipo_cliente">
+              <option value="persona">Persona</option>
+              <option value="empresa">Empresa</option>
+            </select>
+          </div>
+          <div>
+            <label>Empresa</label>
+            <input name="empresa" placeholder="Requerido si es empresa">
+          </div>
+        </div>
+
+        <!-- Nombre y apellidos -->
+        <div class="form-row">
+          <div>
+            <label>Nombre</label>
+            <input name="nombre">
+          </div>
+          <div>
+            <label>Apellidos</label>
+            <input name="apellidos">
+          </div>
+        </div>
+
+        <!-- Email y teléfono -->
+        <div class="form-row">
+          <div>
+            <label>Email</label>
+            <input type="email" name="email" required>
+          </div>
+          <div>
+            <label>Teléfono</label>
+            <input name="telefono">
+          </div>
+        </div>
+
+        <!-- Dirección -->
+        <div>
+          <label>Dirección de entrega</label>
+          <textarea name="direccion_entrega" rows="3"></textarea>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-row" style="margin-top:8px;">
+          <div>
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="actions" style="margin-top:12px;">
+          <button class="btn ok">Crear cuenta</button>
+          <a class="btn secondary" href="/">Cancelar</a>
+        </div>
+      </form>
+
+      <p style="margin-top:12px;">¿Ya tienes cuenta? <a href="/cliente/login">Inicia sesión</a></p>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mis pedidos</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Mis pedidos</h1>
+      <div class="actions">
+        <a class="btn secondary" href="/cliente/logout">Cerrar sesión</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Fecha</th><th>Estado</th><th>Total</th><th>Pagado</th><th>Pago</th></tr>
+        </thead>
+        <tbody>
+          <% pedidos.forEach(function(p){ %>
+            <tr>
+              <td><a href="/cliente/mis-pedidos/<%= p.id %>">#<%= p.id %></a></td>
+              <td><%= p.fecha.toISOString().slice(0,19).replace('T',' ') %></td>
+              <td>
+                <% if (p.estado_trabajo === 'en_proceso') { %>
+                  <span class="badge estado-proceso">En proceso</span>
+                <% } else if (p.estado_trabajo === 'terminado') { %>
+                  <span class="badge estado-terminado">Terminado</span>
+                <% } else if (p.estado_trabajo === 'entregado') { %>
+                  <span class="badge estado-entregado">Entregado</span>
+                <% } else { %>
+                  <span class="badge">Recibido</span>
+                <% } %>
+              </td>
+              <td><%= Number(p.total || 0).toFixed(2) %> €</td>
+              <td><%= Number(p.pagado || 0).toFixed(2) %> €</td>
+              <td>
+                <% if (p.estado_pago === 'Pagado') { %>
+                  <span class="badge pago-total">Pagado</span>
+                <% } else if ((p.pagado||0) > 0) { %>
+                  <span class="badge pago-parcial">Parcial</span>
+                <% } else { %>
+                  <span class="badge pago-nada">Sin liquidar</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    (function(){
+      var clienteId = <%= JSON.stringify(typeof clienteId === 'undefined' ? null : clienteId) %>;
+      var socket = io();
+      if (clienteId) {
+        socket.emit('join', 'cliente:' + clienteId);
+        socket.on('pedido:estado_actualizado', function(){ location.reload(); });
+        socket.on('pedido:pagos_actualizados', function(){ location.reload(); });
+      }
+    })();
+  </script>
+</body>
+</html>

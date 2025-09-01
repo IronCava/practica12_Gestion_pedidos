@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Nuevo cliente</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Nuevo cliente</h1>
+      <div class="actions">
+        <a class="btn secondary" href="/admin/clientes">← Volver</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <form method="post">
+        <div class="form-row">
+          <div>
+            <label>Tipo</label>
+            <select name="tipo_cliente">
+              <option value="persona">Persona</option>
+              <option value="empresa">Empresa</option>
+            </select>
+          </div>
+          <div>
+            <label>Empresa</label>
+            <input name="empresa" placeholder="Requerido si tipo=empresa">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Nombre</label>
+            <input name="nombre">
+          </div>
+          <div>
+            <label>Apellidos</label>
+            <input name="apellidos">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Email</label>
+            <input type="email" name="email" required>
+          </div>
+          <div>
+            <label>Teléfono</label>
+            <input name="telefono">
+          </div>
+        </div>
+
+        <div>
+          <label>Dirección de entrega</label>
+          <textarea name="direccion_entrega" rows="3"></textarea>
+        </div>
+
+        <div class="actions" style="margin-top:12px;">
+          <button class="btn ok">Guardar</button>
+          <a class="btn secondary" href="/admin/clientes">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

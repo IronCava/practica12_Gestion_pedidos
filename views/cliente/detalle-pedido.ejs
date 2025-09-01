@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pedido #<%= pedido.id %></title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="container">
+    <% if (error) { %><div class="flash error"><%= error %></div><% } %>
+    <% if (success) { %><div class="flash success"><%= success %></div><% } %>
+
+    <header class="card" style="margin-bottom:16px;">
+      <h1>Pedido #<%= pedido.id %></h1>
+      <p style="color:var(--muted);">
+        Fecha: <%= pedido.fecha.toISOString().slice(0,19).replace('T',' ') %> ·
+        Estado: <strong><%= pedido.estado_trabajo %></strong>
+      </p>
+      <div class="actions">
+        <a class="btn secondary" href="/cliente/mis-pedidos">← Volver</a>
+        <a class="btn secondary" href="/cliente/logout">Cerrar sesión</a>
+      </div>
+    </header>
+
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Productos</h2>
+      <table>
+        <thead>
+          <tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <% items.forEach(function(it){ %>
+            <tr>
+              <td><%= it.nombre %></td>
+              <td><%= it.cantidad %></td>
+              <td><%= Number(it.precio_unitario).toFixed(2) %> €</td>
+              <td><%= Number(it.cantidad * it.precio_unitario).toFixed(2) %> €</td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" style="margin-bottom:16px;">
+      <h2>Resumen</h2>
+      <p>
+        Total: <strong><%= Number(resumen.total).toFixed(2) %> €</strong> ·
+        Pagado: <strong><%= Number(resumen.pagado).toFixed(2) %> €</strong> ·
+        Estado de pago:
+        <% if (resumen.estado_pago === 'Pagado') { %>
+          <span class="badge pago-total">Pagado</span>
+        <% } else if ((resumen.pagado || 0) > 0) { %>
+          <span class="badge pago-parcial">Parcial</span>
+        <% } else { %>
+          <span class="badge pago-nada">Sin liquidar</span>
+        <% } %>
+      </p>
+    </section>
+  </div>
+
+  <!-- Socket.IO para actualizaciones en vivo -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    (function(){
+      var pedidoId = <%= JSON.stringify(pedido.id) %>;
+      var socket = io();
+      if (pedidoId) {
+        socket.emit('join', 'pedido:' + pedidoId);
+        socket.on('pedido:estado_actualizado', function(p){
+          if (p && p.pedidoId === pedidoId) location.reload();
+        });
+        socket.on('pedido:pagos_actualizados', function(p){
+          if (p && p.pedidoId === pedidoId) location.reload();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
