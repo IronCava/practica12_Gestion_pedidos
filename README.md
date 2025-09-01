@@ -3,7 +3,7 @@
 Aplicación web para gestión de productos, clientes y pedidos, con área de administración y área de cliente.  
 Incluye login/registro con contraseñas hasheadas, sesiones, validaciones y actualizaciones en tiempo real con **Socket.IO**.
 
-👉 Para ver cómo funciona la app en acción, mira este vídeo: [📺 Ver demo en YouTube](https://youtu.be/n8kLeyntJcM)
+👉 Para ver cómo funciona la app en acción, mira este vídeo: [📺 Ver demo en Vimeo](https://vimeo.com/1114958874?fl=pl&fe=sh)
 
 ---
 
