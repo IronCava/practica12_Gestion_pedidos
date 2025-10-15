@@ -13,7 +13,8 @@ const clienteAuthRoutes = require('./routes/clienteAuth');
 const clientePedidosRoutes = require('./routes/clientePedidos');
 
 const app = express();
-
+// --- Ruta de verificación para Render ---
+app.get('/salud', (req, res) => res.status(200).send('ok'));
 // <<< NUEVO: server http + socket.io
 const http = require('http');
 const server = http.createServer(app);
